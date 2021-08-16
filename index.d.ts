@@ -1,4 +1,4 @@
-declare module 'react-native-touch-id' {
+declare module 'react-native-biometric-id' {
     /**
      * The supported biometry type
      */
