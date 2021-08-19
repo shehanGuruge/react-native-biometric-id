@@ -83,6 +83,7 @@ In your `AndroidManifest.xml`:
 
 ```xml
 <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+<uses-permission android:name="android.permission.USE_BIOMETRIC"/>
 ```
 
 In your `Info.plist`:
