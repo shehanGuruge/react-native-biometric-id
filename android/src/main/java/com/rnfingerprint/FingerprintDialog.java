@@ -186,6 +186,11 @@ public class FingerprintDialog extends DialogFragment implements FingerprintHand
             this.mFingerprintError.setText(errorString);
             this.mFingerprintImage.setColorFilter(this.imageErrorColor);
             this.mFingerprintSensorDescription.setText(this.sensorErrorDescription);
+        }else{
+            this.isAuthInProgress = false;
+            this.mFingerprintHandler.endAuth();
+            this.dialogCallback.onError(errorString, errorCode);
+            dismiss();
         }
     }
 

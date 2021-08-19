@@ -19,20 +19,21 @@ RCT_EXPORT_METHOD(isSupported: (NSDictionary *)options
         context.localizedFallbackTitle = @"";
     }
     
+    
     if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
         
-        // No error found, proceed
-        callback(@[[NSNull null], [self getBiometryType:context]]);
-    } else if ([passcodeFallback boolValue] && [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
-        
-        // No error
         callback(@[[NSNull null], [self getBiometryType:context]]);
     }
+//    else if ([passcodeFallback boolValue] && [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error]) {
+//        NSLog(@"SUPPORTED bhbsdhbdhbk: ");
+//        // No error
+//        callback(@[[NSNull null], [self getBiometryType:context]]);
+//    }
     // Device does not support FaceID / TouchID / Pin OR there was an error!
     else {
         if (error) {
             NSString *errorReason = [self getErrorReason:error];
-            NSLog(@"Authentication failed: %@", errorReason);
+            NSLog(@"Authentication failed IN SUPPORTED: %@", errorReason);
             
             callback(@[RCTMakeError(errorReason, nil, nil), [self getBiometryType:context]]);
             return;
@@ -41,6 +42,12 @@ RCT_EXPORT_METHOD(isSupported: (NSDictionary *)options
         callback(@[RCTMakeError(@"RCTTouchIDNotSupported", nil, nil)]);
         return;
     }
+}
+
+RCT_EXPORT_METHOD(doesRegisteredBiometricExists:(NSString *)reason
+                  callback: (RCTResponseSenderBlock)callback)
+{
+    
 }
 
 RCT_EXPORT_METHOD(authenticate: (NSString *)reason
@@ -56,12 +63,14 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
         context.localizedFallbackTitle = fallbackLabel;
     }
 
+    NSLog(@"%s","IN HERE ");
     if (RCTNilIfNull([options objectForKey:@"passcodeFallback"]) != nil) {
         passcodeFallback = [RCTConvert NSNumber:options[@"passcodeFallback"]];
     }
 
     // Device has TouchID
     if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
+        NSLog(@"EROOR:  ERROR: %@",error);
         // Attempt Authentification
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
                 localizedReason:reason
