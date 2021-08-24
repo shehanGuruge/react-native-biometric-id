@@ -27,7 +27,7 @@ export default {
   },
 
   cancelAuthentication(){
-    
+    NativeTouchID.cancelAuthentication()
   },
 
   authenticate(reason, config) {

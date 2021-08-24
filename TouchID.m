@@ -3,13 +3,15 @@
 #import "React/RCTConvert.h"
 
 @implementation TouchID
+LAContext *context;
 
 RCT_EXPORT_MODULE();
+
 
 RCT_EXPORT_METHOD(isSupported: (NSDictionary *)options
                   callback: (RCTResponseSenderBlock)callback)
 {
-    LAContext *context = [[LAContext alloc] init];
+    context = [[LAContext alloc] init];
     NSError *error;
     
     // Check to see if we have a passcode fallback
@@ -47,7 +49,27 @@ RCT_EXPORT_METHOD(isSupported: (NSDictionary *)options
 RCT_EXPORT_METHOD(doesRegisteredBiometricExists:(NSString *)reason
                   callback: (RCTResponseSenderBlock)callback)
 {
-    
+
+}
+
+
+RCT_EXPORT_METHOD(cancelAuthentication)
+{
+    @try{
+        if (@available(iOS 9.0, *)) {
+            if(context != nil)
+            {
+                [context invalidate];
+            }
+           
+        } else {
+            // Fallback on earlier versions
+        }
+        return;
+    } @catch(NSException *exception){
+    }
+    return;
+   
 }
 
 RCT_EXPORT_METHOD(authenticate: (NSString *)reason
@@ -55,7 +77,7 @@ RCT_EXPORT_METHOD(authenticate: (NSString *)reason
                   callback: (RCTResponseSenderBlock)callback)
 {
     NSNumber *passcodeFallback = [NSNumber numberWithBool:false];
-    LAContext *context = [[LAContext alloc] init];
+    context = [[LAContext alloc] init];
     NSError *error;
 
     if (RCTNilIfNull([options objectForKey:@"fallbackLabel"]) != nil) {
