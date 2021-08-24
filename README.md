@@ -231,13 +231,12 @@ BiometricAuthenticator.isSupported(optionalConfigObject)
 
 ### cancelAuthentication()
 
-This method is only for **Android** and please perform a Platform check prior using this method. This method will cancel the authentication in case if you have hidden the native pop up. (This method will be available for IOS in future releases) 
+This method supports for both **Android** and **IOS** and you do not need to perform a platform check prior calling this method. This method will cancel the authentication if the authentication is in progress such that you can execute your RN tasks. (This method is now available on IOS. Please ensure you are using the latest version of this package) 
 
 **Examples**
 
 ```js
 handleOnCancelPressed = () => {
-  if(Platform.OS === "android")
       BiometricAuthenticator.cancelAuthentication();
 }
 
